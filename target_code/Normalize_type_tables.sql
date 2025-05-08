@@ -1,3 +1,5 @@
+--This is the thing the procedure(for type tables) should create but just in case it fails :)
+
 -------------------------------------
 --INSTERT, normalize for address_type
 --------------------------------------
