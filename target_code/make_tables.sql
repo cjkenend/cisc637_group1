@@ -80,7 +80,7 @@ CREATE TABLE addrress_type (
     -- Use: Hold all of the addresses
 CREATE TABLE address (
     address_id              VARCHAR2(38) NOT NULL,
-    address_value1          VARCHAR2(50) NOT NULL,
+    address_value           VARCHAR2(50) NOT NULL,
     address_city            VARCHAR2(50) NOT NULL,
     address_state           VARCHAR2(2) NOT NULL,
     address_zip             VARCHAR2(10) NOT NULL,
