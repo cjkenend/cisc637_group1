@@ -6,7 +6,7 @@
     and in this case address_num
 */
 
-CREATE OR REPLACE PROCEDURE ud_cisc_group1_target.insert_or_get_address(
+CREATE OR REPLACE PROCEDURE ud_cisc637_group1_target.insert_or_get_address(
     in_dest_table_name          IN VARCHAR2,
     in_dest_col_name            IN VARCHAR2,
 
