@@ -33,7 +33,7 @@
     -- Use: Hold all of the information neeed for each department (onr, dcaa, etc.)
 CREATE TABLE contact (
     contact_id              VARCHAR2(38) NOT NULL,          -- Make sure not missing and columns????
-    contact_type_desc    VARCHAR2(4) NOT NULL,
+    contact_desc            VARCHAR2(4) NOT NULL,
     contact_crtd_id         VARCHAR2(40) NOT NULL,
     contact_crtd_dt         DATE NOT NULL,
     contact_updt_id         VARCHAR2(40) NOT NULL,
@@ -41,11 +41,7 @@ CREATE TABLE contact (
     CONSTRAINT contact_pk PRIMARY KEY ( contact_id ) ENABLE
 );
 
-ALTER TABLE contact
-    ADD CONSTRAINT contact_fk1
-        FOREIGN KEY ( contact_contact_type_id )
-            REFERENCES contact_type ( contact_type_id )
-        ENABLE;
+
 
 
 
