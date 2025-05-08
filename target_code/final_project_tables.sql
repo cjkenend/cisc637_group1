@@ -1,4 +1,8 @@
 -- Notes
+
+-- Foriegn keys dropped for all type tables(will be generated using precedure) and columns_name changed from (tablename_tablename_type_ID) to (tablename_desc) 
+--the tablename_desc will be dropped and the tablename_tablenem_Type_id will be added after the procedure will be run
+
 /*
     Need to implement:
         - Need to change to start-end 
