@@ -15,6 +15,8 @@ CREATE PROCEDURE ud_cisc_group1_target.insert_or_get_address(
     in_address_state            IN VARCHAR2,
     in_address_zip              IN VARCHAR2,
 
+    in_address_type_id          IN VARCHAR2,
+
     in_address_crtd_id          IN VARCHAR2,
     in_address_crtd_dt          IN VARCHAR2,
     
