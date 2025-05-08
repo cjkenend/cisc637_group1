@@ -123,7 +123,7 @@ CREATE TABLE phone_type (
     -- Use: Hold all of the different phones 
 CREATE TABLE phone (
     phone_id            VARCHAR2(38) NOT NULL,
-    phone_number1       VARCHAR2(20) NOT NULL,          -- Longest Phone varchar was 20?
+    phone_number        VARCHAR2(20) NOT NULL,          -- Longest Phone varchar was 20?
     phone_phone_type_id VARCHAR2(38) NOT NULL,          -- Do we need the code column here??
     phone_crtd_id       VARCHAR2(40) NOT NULL,
     phone_crtd_dt       DATE NOT NULL,
