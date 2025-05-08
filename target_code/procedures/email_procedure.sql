@@ -9,20 +9,20 @@
 CREATE OR REPLACE PROCEDURE ud_cisc637_group1_target.insert_or_get_address(
     IN_EMAIL                 IN VARCHAR2,
 
-    EMAIL_NAME            IN VARCHAR2,
-    EMAIL_TYPE_ID         IN VARCHAR2,
+    IN_EMAIL_NAME            IN VARCHAR2,
+    IN_EMAIL_TYPE_ID         IN VARCHAR2,
 
-    EMAIL_CRTD_ID         IN VARCHAR2,
-    EMAIL_CRTD_DT          IN VARCHAR2,
+    IN_EMAIL_CRTD_ID         IN VARCHAR2,
+    IN_EMAIL_CRTD_DT          IN VARCHAR2,
     
-    EMAIL_UPDT_ID          IN VARCHAR2,
-    EMAIL_UPDT_DT          IN VARCHAR2,
+    IN_EMAIL_UPDT_ID          IN VARCHAR2,
+    IN_EMAIL_UPDT_DT          IN VARCHAR2,
 
     OUT_EMAIL_ID              OUT VARCHAR2
 )
 IS
     v_sql               VARCHAR2(1000);
-    v_tmp_address_id    VARCHAR2(38);
+    v_tmp_email_id    VARCHAR2(38);
 
 BEGIN
 
@@ -30,7 +30,7 @@ BEGIN
     v_sql := '
         SELECT address_id 
         FROM ' || IN_EMAIL || '
-        WHERE EMAIL_NAME;
+        WHERE EMAIL_NAME';
 
     --Now go through the execution process
     BEGIN
