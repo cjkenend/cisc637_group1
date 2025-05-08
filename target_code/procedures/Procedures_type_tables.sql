@@ -1,3 +1,5 @@
+--This is the Procedure we can use for all the type tables;
+
 CREATE OR REPLACE PROCEDURE normalize_table(
     p_original_table  IN VARCHAR2,
     p_original_column IN VARCHAR2,
