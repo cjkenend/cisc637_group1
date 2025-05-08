@@ -2,13 +2,12 @@
 
 /* 
     Call the procedure with all of the variables for an insert on the table
-    along with the source_table, dest_table, dest_col_name, 
+    along with the source_table, dest_table, 
     and in this case address_num
 */
 
 CREATE OR REPLACE PROCEDURE ud_cisc637_group1_target.insert_or_get_address(
     in_dest_table_name          IN VARCHAR2,
-    in_dest_col_name            IN VARCHAR2,
 
     in_address_value            IN VARCHAR2,
     in_address_city             IN VARCHAR2,
