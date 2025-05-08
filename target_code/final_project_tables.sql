@@ -46,7 +46,7 @@ CREATE TABLE contact_type (
     -- Use: Hold all of the information neeed for each department (onr, dcaa, etc.)
 CREATE TABLE contact (
     contact_id              VARCHAR2(38) NOT NULL,          -- Make sure not missing and columns????
-    contact_desc VARCHAR2(38) NOT NULL,
+    contact_desc            VARCHAR2(38) NOT NULL,
     contact_crtd_id         VARCHAR2(40) NOT NULL,
     contact_crtd_dt         DATE NOT NULL,
     contact_updt_id         VARCHAR2(40) NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE address (
     address_city            VARCHAR2(50) NOT NULL,
     address_state           VARCHAR2(2) NOT NULL,
     address_zip             VARCHAR2(10) NOT NULL,
-    address_desc VARCHAR2(38) NOT NULL,
+    address_desc            VARCHAR2(38) NOT NULL,
     address_crtd_id         VARCHAR2(40) NOT NULL,
     address_crtd_dt         DATE NOT NULL,
     address_updt_id         VARCHAR2(40) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE phone (
     phone_id            VARCHAR2(38) NOT NULL,
     phone_number1       VARCHAR2(20) NOT NULL,          -- Longest Phone varchar was 20?
     phone_number2       VARCHAR2(20),                   -- Longest Phone varchar was 20?
-    phone_desc VARCHAR2(38) NOT NULL,          -- Do we need the code column here??
+    phone_desc          VARCHAR2(38) NOT NULL,          -- Do we need the code column here??
     phone_crtd_id       VARCHAR2(40) NOT NULL,
     phone_crtd_dt       DATE NOT NULL,
     phone_updt_id       VARCHAR2(40) NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE email_type (
 CREATE TABLE email (
     email_id            VARCHAR2(38) NOT NULL,
     email_name          VARCHAR2(20) NOT NULL,
-    email_desc VARCHAR2(38) NOT NULL,
+    email_desc          VARCHAR2(38) NOT NULL,
     email_crtd_id       VARCHAR2(40) NOT NULL,
     email_crtd_dt       DATE NOT NULL,
     email_updt_id       VARCHAR2(40) NOT NULL,
