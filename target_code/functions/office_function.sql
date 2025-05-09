@@ -9,22 +9,20 @@
 CREATE OR REPLACE FUNCTION ud_cisc637_group1_target.insert_or_get_office(
     in_dest_table_name          IN VARCHAR2,
 
-    in_office_name             IN VARCHAR2,
+    in_office_name              IN VARCHAR2,
 
-    in_office_type_id            IN VARCHAR2,
+    in_office_office_type_id    IN VARCHAR2,
 
     in_office_crtd_id            IN VARCHAR2,
-    in_office_crtd_dt            IN VARCHAR2,
+    in_office_crtd_dt            IN DATE,
     
     in_office_updt_id            IN VARCHAR2,
-    in_office_updt_dt            IN VARCHAR2,
-
-    out_office_id                OUT VARCHAR2
+    in_office_updt_dt            IN DATE
 )
-RETURN VARCAHR2
+RETURN VARCHAR2
 IS
     v_sql               VARCHAR2(1000);
-    v_tmp_office_id    VARCHAR2(38);
+    out_office_id    VARCHAR2(38);
 
 BEGIN
 
@@ -32,7 +30,7 @@ BEGIN
     v_sql := '
         SELECT office_id 
         FROM ' || in_dest_table_name || '
-        WHERE office_number = :office_number';
+        WHERE office_name = :office_name';
 
     --Now go through the execution process
     BEGIN
@@ -43,7 +41,7 @@ BEGIN
         USING in_office_name;
 
         -- Return 
-        RETURN(out_office_id);
+        RETURN out_office_id;
     
     --Set an exception if data isn't found
     EXCEPTION
@@ -52,13 +50,13 @@ BEGIN
             --Handle the insert now 
             v_sql := '
                 INSERT INTO ud_cisc637_group1_target.' || in_dest_table_name || '(
-                    office_number, 
+                    office_name, 
                     office_office_type_id,
                     office_crtd_id, office_crtd_dt,
                     office_updt_id, office_updt_dt
                 )
                 VALUES (
-                    :office_number, 
+                    :office_name, 
                     :office_office_type_id,
                     :office_crtd_id, :office_crtd_dt,
                     :office_updt_id, :office_updt_dt
@@ -67,17 +65,14 @@ BEGIN
             
             --Execute 
             EXECUTE IMMEDIATE v_sql
-            INTO v_tmp_office_id
             USING in_office_name,
-                in_office_type_id,
+                in_office_office_type_id,
                 in_office_crtd_id, in_office_crtd_dt,
-                in_office_updt_id, in_office_updt_dt;
-            
-            --Setting out variable
-            out_office_id := v_tmp_office_id;
+                in_office_updt_id, in_office_updt_dt,
+                OUT out_office_id;
 
             --Return
-            RETURN(out_office_id);
+            RETURN out_office_id;
         
     END;
     

@@ -111,35 +111,33 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
 
         IF og.office IS NOT NULL THEN
         
-        -- Inserts Email
-        insert_or_get_office(
-            in_dest_table_name     => 'OFFICE',
-            in_office_name         => v_office,
-            in_office_type_id      => v_office_type_id_hq,
-            in_office_crtd_id      => v_crt_user,
-            in_office_crtd_dt      => v_crt_date,
-            in_office_updt_id      => v_mdf_user,
-            in_office_updt_dt      => v_mdf_date,
+            -- Inserts Office
+            v_office_id := insert_or_get_office(
+                    in_dest_table_name     => 'OFFICE',
+                    in_office_name         => v_office,
+                    in_office_type_id      => v_office_type_id_hq,
+                    in_office_crtd_id      => v_crt_user,
+                    in_office_crtd_dt      => v_crt_date,
+                    in_office_updt_id      => v_mdf_user,
+                    in_office_updt_dt      => v_mdf_date
+                );
+        
+            INSERT INTO UD_CISC637_GROUP1_TARGET.contact_office
+            (contact_office_contact_id, contact_office_office_id)
+            VALUES(v_contact_id, v_office_id);
             
-            out_phone_id            => v_office_id
-        );
-        
-        INSERT INTO UD_CISC637_GROUP1_TARGET.contact_office
-        (contact_office_contact_id, contact_office_office_id)
-        VALUES(v_contact_id, v_office_id);
-        
         END IF;
         
---TODO missing regioun handling
---Address1, city, state, zipcode, handling
+--Address1, region, city, state, zipcode, handling
 --------------------------------------------------------
         
         IF og.address1 IS NOT NULL THEN   
             --Inserts Address1
-            insert_or_get_address(
+            v_address1_id := insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
                 in_dest_col_name   => 'address_id',
                 in_address_value   => v_address1,
+                in_address_region  => v_region,
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zipcode,
@@ -147,9 +145,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
-                in_address_updt_dt => v_mdf_date,
-                
-                out_address_id     => v_address1_id
+                in_address_updt_dt => v_mdf_date
             );
         
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
@@ -157,15 +153,15 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
             VALUES(v_contact_id, v_address1_id);
         END IF;
         
---TODO missing regioun handling
---Address2 handling
+--Address2, region, city, state, zipcode, handling
 --------------------------------------------------------
         IF og.address2 IS NOT NULL THEN
             --Inserts Address2
-            insert_or_get_address(
+            v_address2_id := insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
                 in_dest_col_name   => 'address_id',
                 in_address_value   => v_address2,
+                in_address_region => v_region,
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zipcode,
@@ -173,9 +169,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
-                in_address_updt_dt => v_mdf_date,
-                
-                out_address_id     => v_address2_id
+                in_address_updt_dt => v_mdf_date
             );
         
     
@@ -189,16 +183,14 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
  
         IF og.phone IS NOT NULL THEN
             --Inserts Phone Number
-            insert_or_get_phone(
+            v_phone_per_id := insert_or_get_phone(
                 in_dest_table_name      => 'PHONE',
                 in_phone_number         => v_phone,
                 in_phone_type_id        => v_phone_type_id_per,
                 in_phone_crtd_id      => v_crt_user,
                 in_phone_crtd_dt      => v_crt_date,
                 in_phone_updt_id      => v_mdf_user,
-                in_phone_updt_dt      => v_mdf_date,
-            
-                out_phone_id            => v_phone_per_id
+                in_phone_updt_dt      => v_mdf_date
             );
             
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_phone
@@ -211,16 +203,14 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
         
         IF og.fax IS NOT NULL THEN
             -- Inserts Fax Number
-            insert_or_get_phone(
+            v_phone_fax_id := insert_or_get_phone(
                 in_dest_table_name    => 'PHONE',
                 in_phone_number       => v_fax,
                 in_phone_type_id      => v_phone_type_id_fax,
                 in_phone_crtd_id      => v_crt_user,
                 in_phone_crtd_dt      => v_crt_date,
                 in_phone_updt_id      => v_mdf_user,
-                in_phone_updt_dt      => v_mdf_date,
-                
-                out_phone_id            => v_phone_fax_id
+                in_phone_updt_dt      => v_mdf_date
             );
             
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_phone
@@ -232,18 +222,16 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
 --------------------------------------------------------
 
         IF og.email IS NOT NULL THEN
-            
+        
             -- Inserts Email
-            insert_or_get_email(
+            v_email_id := insert_or_get_email(
                 in_dest_table_name    => 'EMAIL',
                 in_email              => v_email,
                 in_email_type_id      => v_email_type_work,
                 in_email_crtd_id      => v_crt_user,
                 in_email_crtd_dt      => v_crt_date,
                 in_email_updt_id      => v_mdf_user,
-                in_email_updt_dt      => v_mdf_date,
-                
-                out_email_id          => v_email_id
+                in_email_updt_dt      => v_mdf_date
             );
             
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_email

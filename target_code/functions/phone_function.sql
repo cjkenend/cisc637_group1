@@ -11,20 +11,18 @@ CREATE OR REPLACE FUNCTION ud_cisc637_group1_target.insert_or_get_phone(
 
     in_phone_number             IN VARCHAR2,
 
-    in_phone_type_id            IN VARCHAR2,
+    in_phone_phone_type_id      IN VARCHAR2,
 
     in_phone_crtd_id            IN VARCHAR2,
-    in_phone_crtd_dt            IN VARCHAR2,
+    in_phone_crtd_dt            IN DATE,
     
     in_phone_updt_id            IN VARCHAR2,
-    in_phone_updt_dt            IN VARCHAR2,
-
-    out_phone_id                OUT VARCHAR2
+    in_phone_updt_dt            IN DATE
 )
-RETURN VARCAHR2
+RETURN VARCHAR2
 IS
-    v_sql               VARCHAR2(1000);
-    v_tmp_phone_id    VARCHAR2(38);
+    v_sql           VARCHAR2(1000);
+    out_phone_id    VARCHAR2(38);
 
 BEGIN
 
@@ -43,7 +41,7 @@ BEGIN
         USING in_phone_number;
 
         -- Return 
-        RETURN(out_phone_id);
+        RETURN out_phone_id;
     
     --Set an exception if data isn't found
     EXCEPTION
@@ -67,17 +65,14 @@ BEGIN
             
             --Execute 
             EXECUTE IMMEDIATE v_sql
-            INTO v_tmp_phone_id
             USING in_phone_number,
-                in_phone_type_id,
+                in_phone_phone_type_id,
                 in_phone_crtd_id, in_phone_crtd_dt,
-                in_phone_updt_id, in_phone_updt_dt;
-            
-            --Setting out variable
-            out_phone_id := v_tmp_phone_id;
-
+                in_phone_updt_id, in_phone_updt_dt,
+                OUT out_phone_id;
+        
             --Return
-            RETURN(out_phone_id);
+            RETURN out_phone_id;
         
     END;
     
