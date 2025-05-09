@@ -51,7 +51,11 @@ CREATE TABLE contact (
     CONSTRAINT contact_pk PRIMARY KEY ( contact_id ) ENABLE
 );
 
-
+ALTER TABLE contact
+    ADD CONSTRAINT contact_fk1
+        FOREIGN KEY ( contact_contact_type_id )
+            REFERENCES contact_type ( contact_type_id )
+        ENABLE;
 
 
 
@@ -60,14 +64,14 @@ CREATE TABLE contact (
 
 -- Making the Address_type table 
     -- Use: Hold all of the different types of address 
-CREATE TABLE addrress_type (
+CREATE TABLE address_type (
     address_type_id      VARCHAR2(38) NOT NULL,
     address_type_desc    VARCHAR2(255) NOT NULL,
     address_type_crtd_id VARCHAR2(40) NOT NULL,
     address_type_crtd_dt DATE NOT NULL,
     address_type_updt_id VARCHAR2(40) NOT NULL,
     address_type_updt_dt DATE NOT NULL,
-    CONSTRAINT addrress_table_pk PRIMARY KEY ( address_type_id ) ENABLE
+    CONSTRAINT address_table_pk PRIMARY KEY ( address_type_id ) ENABLE
 );
 
 -- Making the Address table 
@@ -89,7 +93,7 @@ CREATE TABLE address (
 ALTER TABLE address
     ADD CONSTRAINT address_fk1
         FOREIGN KEY ( address_address_type_id )
-            REFERENCES addrress_type ( address_type_id )
+            REFERENCES address_type ( address_type_id )
         ENABLE;
 
 
