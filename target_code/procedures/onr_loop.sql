@@ -54,7 +54,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
     v_address2  UD_CISC637_GROUP1.TBL_ONR.address2%TYPE;
     v_city      UD_CISC637_GROUP1.TBL_ONR.city%TYPE;
     v_state     UD_CISC637_GROUP1.TBL_ONR.state%TYPE;
-    v_zipcode   UD_CISC637_GROUP1.TBL_ONR.zip%TYPE;
+    v_zipcode   UD_CISC637_GROUP1.TBL_ONR.zipcode%TYPE;
     v_phone     UD_CISC637_GROUP1.TBL_ONR.phone%TYPE;
     v_fax       UD_CISC637_GROUP1.TBL_ONR.fax%TYPE;
     v_code      UD_CISC637_GROUP1.TBL_ONR.code%TYPE;
@@ -70,7 +70,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
     v_address_type_id_home   UD_CISC637_GROUP1_TARGET.address_type.address_type_id%TYPE;
     v_phone_type_id_per UD_CISC637_GROUP1_TARGET.phone_type.phone_type_id%TYPE;
     v_phone_type_id_fax UD_CISC637_GROUP1_TARGET.phone_type.phone_type_id%TYPE;
-    v_email_type_work  UD_CISC637_GROUP1_TARGET.email_type.email_type_id%TYPE;
+    v_email_type_id_work  UD_CISC637_GROUP1_TARGET.email_type.email_type_id%TYPE;
 
     -- Get needed type_ids
     -- Presumes existence of 
@@ -79,7 +79,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
     --      phone_type_desc: FAX, PERSONAL 
     --      email_type_desc: WORK    
     BEGIN
-        SELECT OFFICE_TYPE_ID INTO v_office_type_hq FROM UD_CISC637_GROUP1_TARGET.office_type WHERE OFFICE_TYPE_DESC = 'HEADQUARTERS';
+        SELECT OFFICE_TYPE_ID INTO v_office_type_id_hq FROM UD_CISC637_GROUP1_TARGET.office_type WHERE OFFICE_TYPE_DESC = 'HEADQUARTERS';
         SELECT ADDRESS_TYPE_ID INTO v_address_type_id_home FROM UD_CISC637_GROUP1_TARGET.address_type WHERE ADDRESS_TYPE_DESC = 'HOME';
         SELECT PHONE_TYPE_ID INTO v_phone_type_id_per FROM UD_CISC637_GROUP1_TARGET.phone_type WHERE PHONE_TYPE_DESC = 'PERSONAL';
         SELECT PHONE_TYPE_ID INTO v_phone_type_id_fax FROM UD_CISC637_GROUP1_TARGET.phone_type WHERE PHONE_TYPE_DESC = 'FAX';
@@ -93,7 +93,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
         v_address2 := og.address2;
         v_city     := og.city;
         v_state    := og.state;
-        v_zipcode  := og.zip;
+        v_zipcode  := og.zipcode;
         v_phone    := og.phone;
         v_fax      := og.fax;
         v_code     := og.code;
@@ -124,7 +124,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
             v_office_id := insert_or_get_office(
                     in_dest_table_name     => 'OFFICE',
                     in_office_name         => v_office,
-                    in_office_type_id      => v_office_type_id_hq,
+                    in_office_office_type_id      => v_office_type_id_hq,
                     in_office_crtd_id      => v_crt_user,
                     in_office_crtd_dt      => v_crt_date,
                     in_office_updt_id      => v_mdf_user,
@@ -144,12 +144,12 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
             --Inserts Address1
             v_address1_id := insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
-                in_address_value   => v_address1,
                 in_address_region  => v_region,
+                in_address_value   => v_address1,
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zipcode,
-                in_address_type_id => v_address_type_id_home,
+                in_address_address_type_id => v_address_type_id_home,
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
@@ -172,7 +172,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zipcode,
-                in_address_type_id => v_address_type_id_home,
+                in_address_address_type_id => v_address_type_id_home,
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
@@ -193,7 +193,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
             v_phone_per_id := insert_or_get_phone(
                 in_dest_table_name      => 'PHONE',
                 in_phone_number         => v_phone,
-                in_phone_type_id        => v_phone_type_id_per,
+                in_phone_phone_type_id        => v_phone_type_id_per,
                 in_phone_crtd_id      => v_crt_user,
                 in_phone_crtd_dt      => v_crt_date,
                 in_phone_updt_id      => v_mdf_user,
@@ -213,7 +213,7 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
             v_phone_fax_id := insert_or_get_phone(
                 in_dest_table_name    => 'PHONE',
                 in_phone_number       => v_fax,
-                in_phone_type_id      => v_phone_type_id_fax,
+                in_phone_phone_type_id      => v_phone_type_id_fax,
                 in_phone_crtd_id      => v_crt_user,
                 in_phone_crtd_dt      => v_crt_date,
                 in_phone_updt_id      => v_mdf_user,
@@ -233,8 +233,8 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
             -- Inserts Email
             v_email_id := insert_or_get_email(
                 in_dest_table_name    => 'EMAIL',
-                in_email              => v_email,
-                in_email_type_id      => v_email_type_work,
+                in_email_name         => v_email,
+                in_email_email_type_id      => v_email_type_id_work,
                 in_email_crtd_id      => v_crt_user,
                 in_email_crtd_dt      => v_crt_date,
                 in_email_updt_id      => v_mdf_user,

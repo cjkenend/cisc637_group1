@@ -306,7 +306,7 @@ ALTER TABLE contact_email
 CREATE TABLE contact_office (
     contact_office_id         VARCHAR2(38) NOT NULL,
     contact_office_contact_id VARCHAR2(38) NOT NULL,
-    contact_office_email_id   VARCHAR2(38) NOT NULL,
+    contact_office_office_id VARCHAR2(38) NOT NULL,
     contact_office_crtd_id    VARCHAR2(40) NOT NULL,
     contact_office_crtd_dt    DATE NOT NULL,
     contact_office_updt_id    VARCHAR2(40) NOT NULL,
@@ -322,6 +322,6 @@ ALTER TABLE contact_office
 
 ALTER TABLE contact_office
     ADD CONSTRAINT contact_office_fk2
-        FOREIGN KEY ( contact_office_email_id )
-            REFERENCES email ( email_id )
+        FOREIGN KEY ( contact_office_office_id )
+            REFERENCES office ( office_id )
         ENABLE;

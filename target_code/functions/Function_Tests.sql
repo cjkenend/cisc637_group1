@@ -1,13 +1,15 @@
 --Function Tests
 SET SERVEROUTPUT ON;
 
---Inserts some tpyes, IDS are put in manualy
+--Inserts some types, IDS are then put in manualy
 /*
 INSERT INTO UD_CISC637_GROUP1_TARGET.OFFICE_TYPE (office_type_desc) VALUES ('HQ');
 INSERT INTO UD_CISC637_GROUP1_TARGET.EMAIL_TYPE (email_type_desc) VALUES ('WORK');
 INSERT INTO UD_CISC637_GROUP1_TARGET.PHONE_TYPE (phone_type_desc) VALUES ('FAX');
 INSERT INTO UD_CISC637_GROUP1_TARGET.ADDRESS_TYPE (address_type_desc) VALUES ('HOME');
 */
+
+
 
 
 --------TEST OFFICE FUNCTION-------
