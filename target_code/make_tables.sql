@@ -82,6 +82,7 @@ CREATE TABLE address (
     address_city            VARCHAR2(50) NOT NULL,
     address_state           VARCHAR2(2) NOT NULL,
     address_zip             VARCHAR2(10) NOT NULL,
+    address_region          VARCHAR(50),
     address_address_type_id VARCHAR2(38) NOT NULL,
     address_crtd_id         VARCHAR2(40) NOT NULL,
     address_crtd_dt         DATE NOT NULL,
