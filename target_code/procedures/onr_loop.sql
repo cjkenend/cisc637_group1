@@ -6,7 +6,7 @@
 --      phone_type_desc: FAX, PERSONAL 
 --      email_type_desc: WORK
 
-CREATE OR REPLACE PROCEDURE move_onr AS
+CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
     -- Cursor to read all rows from the ONR table
     CURSOR c_cursor IS 
         SELECT * FROM UD_CISC637_GROUP1.TBL_ONR;
@@ -229,7 +229,14 @@ CREATE OR REPLACE PROCEDURE move_onr AS
             (contact_address_contact_id, contact_address_address_id)
             VALUES(v_contact_id, v_email_id);
         END IF;
-        
+      END LOOP;
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE;
+    END MIGRATE_ONR;
+END;        
 ---------------------------------------------------
  
 -- Loop over rows in ONR table
@@ -258,5 +265,3 @@ CREATE OR REPLACE PROCEDURE move_onr AS
             --Use 'insert_or_get_email' procedure
             --INSERT a new record in CONTACT_EMAIL using v_contact_id
       
-      END LOOP;
-END;
