@@ -14,7 +14,6 @@ CREATE OR REPLACE FUNCTION ud_cisc637_group1_target.insert_or_get_address(
     in_address_city             IN VARCHAR2,
     in_address_state            IN VARCHAR2,
     in_address_zip              IN VARCHAR2,
-    in_address_region           IN VARCHAR2,
 
     in_address_address_type_id  IN VARCHAR2,
 
