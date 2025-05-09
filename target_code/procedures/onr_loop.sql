@@ -74,10 +74,10 @@ CREATE OR REPLACE PROCEDURE MIGRATE_ONR AS
 
     -- Get needed type_ids
     -- Presumes existence of 
-    --      office_type_desc: HEADQUARTERS
-    --      address_type_desc: HOME
-    --      phone_type_desc: FAX, PERSONAL 
-    --      email_type_desc: WORK    
+    --      office_type_desc: HQ
+    --      address_type_desc: Home
+    --      phone_type_desc: fax, Personal 
+    --      email_type_desc: Work    
     BEGIN
         SELECT OFFICE_TYPE_ID INTO v_office_type_id_hq FROM UD_CISC637_GROUP1_TARGET.office_type WHERE OFFICE_TYPE_DESC = 'HQ';
         SELECT ADDRESS_TYPE_ID INTO v_address_type_id_home FROM UD_CISC637_GROUP1_TARGET.address_type WHERE ADDRESS_TYPE_DESC = 'Home';
