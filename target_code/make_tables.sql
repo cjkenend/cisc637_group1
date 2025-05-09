@@ -43,7 +43,7 @@ CREATE TABLE contact_type (
     -- Use: Hold all of the information neeed for each department (onr, dcaa, etc.)
 CREATE TABLE contact (
     contact_id              VARCHAR2(38) NOT NULL,          -- Make sure not missing and columns????
-    contact_desc            VARCHAR2(4) NOT NULL,
+    contact_contact_type_id            VARCHAR2(38) NOT NULL,
     contact_crtd_id         VARCHAR2(40) NOT NULL,
     contact_crtd_dt         DATE NOT NULL,
     contact_updt_id         VARCHAR2(40) NOT NULL,
