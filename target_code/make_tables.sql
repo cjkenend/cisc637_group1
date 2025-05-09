@@ -28,12 +28,22 @@
 
 ------------------------   Contact Tables ---------------------------------------
 
+-- Making contact_type id
+    -- Use: Hold all of the different names for the departments
+CREATE TABLE contact_type (
+    contact_type_id      VARCHAR2(38) NOT NULL,          --Right value for varchar?
+    contact_type_crtd_id VARCHAR2(40) NOT NULL,
+    contact_type_crtd_dt DATE NOT NULL,
+    contact_type_updt_id VARCHAR2(40) NOT NULL,
+    contact_type_updt_dt DATE NOT NULL,
+    CONSTRAINT contact_type_pk PRIMARY KEY ( contact_type_id ) ENABLE
+);
 
 --- Making Contact table
     -- Use: Hold all of the information neeed for each department (onr, dcaa, etc.)
 CREATE TABLE contact (
     contact_id              VARCHAR2(38) NOT NULL,          -- Make sure not missing and columns????
-    contact_desc            VARCHAR2(4) NOT NULL,
+    contact_contact_type_id            VARCHAR2(38) NOT NULL,
     contact_crtd_id         VARCHAR2(40) NOT NULL,
     contact_crtd_dt         DATE NOT NULL,
     contact_updt_id         VARCHAR2(40) NOT NULL,
@@ -41,7 +51,11 @@ CREATE TABLE contact (
     CONSTRAINT contact_pk PRIMARY KEY ( contact_id ) ENABLE
 );
 
-
+ALTER TABLE contact
+    ADD CONSTRAINT contact_fk1
+        FOREIGN KEY ( contact_contact_type_id )
+            REFERENCES contact_type ( contact_type_id )
+        ENABLE;
 
 
 
@@ -50,14 +64,14 @@ CREATE TABLE contact (
 
 -- Making the Address_type table 
     -- Use: Hold all of the different types of address 
-CREATE TABLE addrress_type (
+CREATE TABLE address_type (
     address_type_id      VARCHAR2(38) NOT NULL,
     address_type_desc    VARCHAR2(255) NOT NULL,
     address_type_crtd_id VARCHAR2(40) NOT NULL,
     address_type_crtd_dt DATE NOT NULL,
     address_type_updt_id VARCHAR2(40) NOT NULL,
     address_type_updt_dt DATE NOT NULL,
-    CONSTRAINT addrress_table_pk PRIMARY KEY ( address_type_id ) ENABLE
+    CONSTRAINT address_table_pk PRIMARY KEY ( address_type_id ) ENABLE
 );
 
 -- Making the Address table 
@@ -68,6 +82,7 @@ CREATE TABLE address (
     address_city            VARCHAR2(50) NOT NULL,
     address_state           VARCHAR2(2) NOT NULL,
     address_zip             VARCHAR2(10) NOT NULL,
+    address_region          VARCHAR(50),
     address_address_type_id VARCHAR2(38) NOT NULL,
     address_crtd_id         VARCHAR2(40) NOT NULL,
     address_crtd_dt         DATE NOT NULL,
@@ -79,7 +94,7 @@ CREATE TABLE address (
 ALTER TABLE address
     ADD CONSTRAINT address_fk1
         FOREIGN KEY ( address_address_type_id )
-            REFERENCES addrress_type ( address_type_id )
+            REFERENCES address_type ( address_type_id )
         ENABLE;
 
 
@@ -159,6 +174,41 @@ ALTER TABLE email
     ADD CONSTRAINT email_fk1
         FOREIGN KEY ( email_email_type_id )
             REFERENCES email_type ( email_type_id )
+        ENABLE;
+
+
+------------------------   office Tables ---------------------------------------
+        
+-- Making the office_type table
+    -- Use: Hold all the different office types
+CREATE TABLE office_type (
+    office_type_id      VARCHAR2(38) NOT NULL,
+    office_type_desc    VARCHAR2(50) NOT NULL,       -- 50 is place holder. Personal/work???
+    office_type_crtd_id VARCHAR2(40) NOT NULL,
+    office_type_crtd_dt DATE NOT NULL,
+    office_type_updt_id VARCHAR2(40) NOT NULL,
+    office_type_updt_dt DATE NOT NULL,
+    CONSTRAINT office_type_pk PRIMARY KEY ( office_type_id ) ENABLE
+);
+
+
+-- Making the office table 
+    -- Use: Hold all of the offices addresses
+CREATE TABLE office (
+    office_id            VARCHAR2(38) NOT NULL,
+    office_name          VARCHAR2(20) NOT NULL,
+    office_office_type_id VARCHAR2(38) NOT NULL,
+    office_crtd_id       VARCHAR2(40) NOT NULL,
+    office_crtd_dt       DATE NOT NULL,
+    office_updt_id       VARCHAR2(40) NOT NULL,
+    office_updt_dt       DATE NOT NULL,
+    CONSTRAINT office_pk PRIMARY KEY ( office_id ) ENABLE
+);
+
+ALTER TABLE office
+    ADD CONSTRAINT office_fk1
+        FOREIGN KEY ( office_office_type_id )
+            REFERENCES office_type ( office_type_id )
         ENABLE;
         
         
@@ -247,5 +297,30 @@ ALTER TABLE contact_email
 ALTER TABLE contact_email
     ADD CONSTRAINT contact_email_fk2
         FOREIGN KEY ( contact_email_email_id )
+            REFERENCES email ( email_id )
+        ENABLE;
+
+-- Making Contact_office table
+    -- Use: In between for the two tables 
+CREATE TABLE contact_office (
+    contact_office_id         VARCHAR2(38) NOT NULL,
+    contact_office_contact_id VARCHAR2(38) NOT NULL,
+    contact_office_email_id   VARCHAR2(38) NOT NULL,
+    contact_office_crtd_id    VARCHAR2(40) NOT NULL,
+    contact_office_crtd_dt    DATE NOT NULL,
+    contact_office_updt_id    VARCHAR2(40) NOT NULL,
+    contact_office_updt_dt    DATE NOT NULL,
+    CONSTRAINT contact_office_pk PRIMARY KEY ( contact_office_id ) ENABLE
+);
+
+ALTER TABLE contact_office
+    ADD CONSTRAINT contact_office_fk1
+        FOREIGN KEY ( contact_office_contact_id )
+            REFERENCES contact ( contact_id )
+        ENABLE;
+
+ALTER TABLE contact_office
+    ADD CONSTRAINT contact_office_fk2
+        FOREIGN KEY ( contact_office_email_id )
             REFERENCES email ( email_id )
         ENABLE;
