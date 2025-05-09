@@ -55,7 +55,7 @@ BEGIN
                     email_updt_id, email_updt_dt
                 )
                 VALUES (
-                    :email_email_type_id,
+                    :email_name, :email_email_type_id,
                     :email_crtd_id, :email_crtd_dt,
                     :email_updt_id, :email_updt_dt
                 )
@@ -64,6 +64,7 @@ BEGIN
             --Execute 
             EXECUTE IMMEDIATE v_sql
             USING
+                in_email_name,
                 in_email_email_type_id,
                 in_email_crtd_id, in_email_crtd_dt,
                 in_email_updt_id, in_email_updt_dt,
