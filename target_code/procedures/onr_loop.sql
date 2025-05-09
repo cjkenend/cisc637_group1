@@ -1,4 +1,10 @@
---NOT FINAL. JUST WANTED TO SHARE TO SEE IF ANYONE HAD ANY NOTES
+-- NOTES
+-- Missing Handling of Region
+-- Assumes existence of 
+--      office_type_desc: HEADQUARTERS
+--      address_type_desc: HOME
+--      phone_type_desc: FAX, PERSONAL 
+--      email_type_desc: WORK
 
 CREATE OR REPLACE PROCEDURE move_onr AS
     -- Cursor to read all rows from the ONR table
@@ -87,7 +93,7 @@ CREATE OR REPLACE PROCEDURE move_onr AS
         -- Inserts Email
         insert_or_get_office(
             in_dest_table_name     => 'OFFICE',
-            in_office              => v_office,
+            in_office_name         => v_office,
             in_office_type_id      => v_office_type_id_hq,
             in_office_crtd_id      => v_crt_user,
             in_office_crtd_dt      => v_crt_date,
@@ -103,13 +109,11 @@ CREATE OR REPLACE PROCEDURE move_onr AS
         
         END IF;
         
-
 --TODO missing regioun handling
 --Address1, city, state, zipcode, handling
 --------------------------------------------------------
         
-        IF og.address1 IS NOT NULL THEN
-                
+        IF og.address1 IS NOT NULL THEN   
             --Inserts Address1
             insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
@@ -127,48 +131,42 @@ CREATE OR REPLACE PROCEDURE move_onr AS
                 out_address_id     => v_address1_id
             );
         
-        INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
-        (contact_address_contact_id, contact_address_address_id)
-        VALUES(v_contact_id, v_address1_id);
-        
+            INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
+            (contact_address_contact_id, contact_address_address_id)
+            VALUES(v_contact_id, v_address1_id);
         END IF;
-
+        
 --TODO missing regioun handling
 --Address2 handling
 --------------------------------------------------------
- 
         IF og.address2 IS NOT NULL THEN
-        
             --Inserts Address2
             insert_or_get_address(
-                in_dest_table_name      => 'ADDRESS',
-                in_dest_col_name        => 'address_id',
-                in_address_value        => v_address2,
-                in_address_city         => v_city,
-                in_address_state        => v_state,
-                in_address_zip          => v_zipcode,
-                in_address_type_id      => v_address_type_id_home,
-                in_address_crtd_id      => v_crt_user,
-                in_address_crtd_dt      => v_crt_date,
-                in_address_updt_id      => v_mdf_user,
-                in_address_updt_dt      => v_mdf_date,
+                in_dest_table_name => 'ADDRESS',
+                in_dest_col_name   => 'address_id',
+                in_address_value   => v_address2,
+                in_address_city    => v_city,
+                in_address_state   => v_state,
+                in_address_zip     => v_zipcode,
+                in_address_type_id => v_address_type_id_home,
+                in_address_crtd_id => v_crt_user,
+                in_address_crtd_dt => v_crt_date,
+                in_address_updt_id => v_mdf_user,
+                in_address_updt_dt => v_mdf_date,
                 
-                out_address_id          => v_address2_id
+                out_address_id     => v_address2_id
             );
+        
     
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
             (contact_address_contact_id, contact_address_address_id)
             VALUES(v_contact_id, v_address2_id);
-
         END IF;
-
-
+        
 --Phone handling
 --------------------------------------------------------
  
         IF og.phone IS NOT NULL THEN
-            
-            
             --Inserts Phone Number
             insert_or_get_phone(
                 in_dest_table_name      => 'PHONE',
@@ -185,21 +183,17 @@ CREATE OR REPLACE PROCEDURE move_onr AS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_phone
             (contact_phone_contact_id, contact_phone_phone_id)
             VALUES(v_contact_id, v_phone_per_id);
-            
         END IF;
-
-        
 
 --Fax handling
 --------------------------------------------------------
         
         IF og.fax IS NOT NULL THEN
-            
             -- Inserts Fax Number
             insert_or_get_phone(
-                in_dest_table_name      => 'PHONE',
-                in_phone_number         => v_fax,
-                in_phone_type_id        => v_phone_type_id_fax,
+                in_dest_table_name    => 'PHONE',
+                in_phone_number       => v_fax,
+                in_phone_type_id      => v_phone_type_id_fax,
                 in_phone_crtd_id      => v_crt_user,
                 in_phone_crtd_dt      => v_crt_date,
                 in_phone_updt_id      => v_mdf_user,
@@ -211,8 +205,6 @@ CREATE OR REPLACE PROCEDURE move_onr AS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_phone
             (contact_phone_contact_id, contact_phone_phone_id)
             VALUES(v_contact_id, v_phone_fax_id);
-    
-            
         END IF;
         
 --Email handling
@@ -230,13 +222,12 @@ CREATE OR REPLACE PROCEDURE move_onr AS
                 in_email_updt_id      => v_mdf_user,
                 in_email_updt_dt      => v_mdf_date,
                 
-                out_email_id            => v_email_id
+                out_email_id          => v_email_id
             );
             
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_email
             (contact_address_contact_id, contact_address_address_id)
             VALUES(v_contact_id, v_email_id);
-            
         END IF;
         
 ---------------------------------------------------
