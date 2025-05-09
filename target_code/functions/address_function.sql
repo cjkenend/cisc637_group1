@@ -13,6 +13,7 @@ CREATE OR REPLACE FUNCTION ud_cisc637_group1_target.insert_or_get_address(
     in_address_city             IN VARCHAR2,
     in_address_state            IN VARCHAR2,
     in_address_zip              IN VARCHAR2,
+    in_address_region           IN VARCHAR2,
 
     in_address_type_id          IN VARCHAR2,
 
@@ -38,7 +39,8 @@ BEGIN
         WHERE address_value = :address_value
         AND address_city = :address_city
         AND address_state = :address_state
-        AND address_zip = :address_zip';
+        AND address_zip = :address_zip
+        and address_region = :address_region';
 
     --Now go through the execution process
     BEGIN
@@ -46,7 +48,7 @@ BEGIN
         --Execute
         EXECUTE IMMEDIATE v_sql
         INTO out_address_id
-        USING in_address_value, in_address_city, in_address_state, in_address_zip;
+        USING in_address_value, in_address_city, in_address_state, in_address_zip, in_address_region;
 
         --Return 
         RETURN(out_address_id);
@@ -58,13 +60,13 @@ BEGIN
             --Handle the insert now 
             v_sql := '
                 INSERT INTO ud_cisc637_group1_target.' || in_dest_table_name || '(
-                    address_value, address_city, address_state, address_zip, 
+                    address_value, address_city, address_state, address_zip, address_region
                     address_address_type_id,
                     address_crtd_id, address_crtd_dt,
                     address_updt_id, address_updt_dt
                 )
                 VALUES (
-                    :address_value, :address_city, :address_state, :address_zip, 
+                    :address_value, :address_city, :address_state, :address_zip, address_region 
                     :address_address_type_id,
                     :address_crtd_id, :address_crtd_dt,
                     :address_updt_id, :address_updt_dt
@@ -74,7 +76,7 @@ BEGIN
             --Execute 
             EXECUTE IMMEDIATE v_sql
             INTO v_tmp_address_id
-            USING in_address_value, in_address_city, in_address_state, in_address_zip,
+            USING in_address_value, in_address_city, in_address_state, in_address_zip, in_address_region
                 in_address_type_id,
                 in_address_crtd_id, in_address_crtd_dt,
                 in_address_updt_id, in_address_updt_dt;
