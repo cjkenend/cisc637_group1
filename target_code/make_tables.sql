@@ -28,6 +28,16 @@
 
 ------------------------   Contact Tables ---------------------------------------
 
+-- Making contact_type id
+    -- Use: Hold all of the different names for the departments
+CREATE TABLE contact_type (
+    contact_type_id      VARCHAR2(38) NOT NULL,          --Right value for varchar?
+    contact_type_crtd_id VARCHAR2(40) NOT NULL,
+    contact_type_crtd_dt DATE NOT NULL,
+    contact_type_updt_id VARCHAR2(40) NOT NULL,
+    contact_type_updt_dt DATE NOT NULL,
+    CONSTRAINT contact_type_pk PRIMARY KEY ( contact_type_id ) ENABLE
+);
 
 --- Making Contact table
     -- Use: Hold all of the information neeed for each department (onr, dcaa, etc.)
