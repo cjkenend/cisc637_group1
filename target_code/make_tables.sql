@@ -299,3 +299,28 @@ ALTER TABLE contact_email
         FOREIGN KEY ( contact_email_email_id )
             REFERENCES email ( email_id )
         ENABLE;
+
+-- Making Contact_office table
+    -- Use: In between for the two tables 
+CREATE TABLE contact_office (
+    contact_office_id         VARCHAR2(38) NOT NULL,
+    contact_office_contact_id VARCHAR2(38) NOT NULL,
+    contact_office_email_id   VARCHAR2(38) NOT NULL,
+    contact_office_crtd_id    VARCHAR2(40) NOT NULL,
+    contact_office_crtd_dt    DATE NOT NULL,
+    contact_office_updt_id    VARCHAR2(40) NOT NULL,
+    contact_office_updt_dt    DATE NOT NULL,
+    CONSTRAINT contact_office_pk PRIMARY KEY ( contact_office_id ) ENABLE
+);
+
+ALTER TABLE contact_office
+    ADD CONSTRAINT contact_office_fk1
+        FOREIGN KEY ( contact_office_contact_id )
+            REFERENCES contact ( contact_id )
+        ENABLE;
+
+ALTER TABLE contact_office
+    ADD CONSTRAINT contact_office_fk2
+        FOREIGN KEY ( contact_office_email_id )
+            REFERENCES email ( email_id )
+        ENABLE;
