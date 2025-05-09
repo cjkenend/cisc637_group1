@@ -174,6 +174,41 @@ ALTER TABLE email
         FOREIGN KEY ( email_email_type_id )
             REFERENCES email_type ( email_type_id )
         ENABLE;
+
+
+------------------------   office Tables ---------------------------------------
+        
+-- Making the office_type table
+    -- Use: Hold all the different office types
+CREATE TABLE office_type (
+    office_type_id      VARCHAR2(38) NOT NULL,
+    office_type_desc    VARCHAR2(50) NOT NULL,       -- 50 is place holder. Personal/work???
+    office_type_crtd_id VARCHAR2(40) NOT NULL,
+    office_type_crtd_dt DATE NOT NULL,
+    office_type_updt_id VARCHAR2(40) NOT NULL,
+    office_type_updt_dt DATE NOT NULL,
+    CONSTRAINT office_type_pk PRIMARY KEY ( office_type_id ) ENABLE
+);
+
+
+-- Making the office table 
+    -- Use: Hold all of the offices addresses
+CREATE TABLE office (
+    office_id            VARCHAR2(38) NOT NULL,
+    office_name          VARCHAR2(20) NOT NULL,
+    office_office_type_id VARCHAR2(38) NOT NULL,
+    office_crtd_id       VARCHAR2(40) NOT NULL,
+    office_crtd_dt       DATE NOT NULL,
+    office_updt_id       VARCHAR2(40) NOT NULL,
+    office_updt_dt       DATE NOT NULL,
+    CONSTRAINT office_pk PRIMARY KEY ( office_id ) ENABLE
+);
+
+ALTER TABLE office
+    ADD CONSTRAINT office_fk1
+        FOREIGN KEY ( office_office_type_id )
+            REFERENCES office_type ( office_type_id )
+        ENABLE;
         
         
         
