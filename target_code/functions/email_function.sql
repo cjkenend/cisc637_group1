@@ -1,12 +1,12 @@
--- Goal is to make a procedure that is called gets an email from the table 
+-- Goal is to make a function that is called gets an email from the table 
 
 /* 
-    Call the procedure with all of the variables for an insert on the table
+    Call the function with all of the variables for an insert on the table
     along with the source_table, dest_table, 
     and in this case email_num
 */
 
-CREATE OR REPLACE PROCEDURE ud_cisc637_group1_target.insert_or_get_email(
+CREATE OR REPLACE FUNCTION ud_cisc637_group1_target.insert_or_get_email(
     in_dest_table_name          IN VARCHAR2,
 
     in_email_name             IN VARCHAR2,
@@ -21,6 +21,7 @@ CREATE OR REPLACE PROCEDURE ud_cisc637_group1_target.insert_or_get_email(
 
     out_email_id                OUT VARCHAR2
 )
+RETURN VARCAHR2
 IS
     v_sql               VARCHAR2(1000);
     v_tmp_email_id    VARCHAR2(38);
@@ -40,6 +41,9 @@ BEGIN
         EXECUTE IMMEDIATE v_sql
         INTO out_email_id
         USING in_email_name;
+
+        -- Return 
+        RETURN(out_email_id);
     
     --Set an exception if data isn't found
     EXCEPTION
@@ -71,6 +75,9 @@ BEGIN
             
             --Setting out variable
             out_email_id := v_tmp_email_id;
+
+            --Return
+            RETURN(out_email_id);
         
     END;
     
@@ -78,5 +85,8 @@ BEGIN
     EXCEPTION
         WHEN OTHERS THEN
             RAISE;
+
+            --Return null
+            RETURN(NULL);
 END;
 /
