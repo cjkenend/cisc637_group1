@@ -133,7 +133,6 @@ create or replace PROCEDURE MIGRATE_ONR IS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_office
             (contact_office_contact_id, contact_office_office_id)
             VALUES(v_contact_id, v_office_id);
-            COMMIT;
         END IF;
 
 --Address1, region, city, state, zipcode, handling
@@ -158,7 +157,6 @@ create or replace PROCEDURE MIGRATE_ONR IS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
             (contact_address_contact_id, contact_address_address_id)
             VALUES(v_contact_id, v_address1_id);
-            COMMIT;
         END IF;
 
 --Address2, region, city, state, zipcode, handling
@@ -183,7 +181,6 @@ create or replace PROCEDURE MIGRATE_ONR IS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
             (contact_address_contact_id, contact_address_address_id)
             VALUES(v_contact_id, v_address2_id);
-            COMMIT;
         END IF;
 
 --Phone handling
@@ -204,7 +201,6 @@ create or replace PROCEDURE MIGRATE_ONR IS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_phone
             (contact_phone_contact_id, contact_phone_phone_id)
             VALUES(v_contact_id, v_phone_per_id);
-            COMMIT;
         END IF;
 
 --Fax handling
@@ -225,7 +221,6 @@ create or replace PROCEDURE MIGRATE_ONR IS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_phone
             (contact_phone_contact_id, contact_phone_phone_id)
             VALUES(v_contact_id, v_phone_fax_id);
-            COMMIT;
         END IF;
 
 --Email handling
@@ -247,7 +242,6 @@ create or replace PROCEDURE MIGRATE_ONR IS
             INSERT INTO UD_CISC637_GROUP1_TARGET.contact_email
             (contact_email_contact_id, contact_email_email_id)
             VALUES(v_contact_id, v_email_id);
-            COMMIT;
         END IF;
     END LOOP;
     COMMIT;

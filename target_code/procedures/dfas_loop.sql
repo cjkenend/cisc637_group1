@@ -97,6 +97,7 @@ BEGIN
         ----------------------------------------------------------
         INSERT INTO ud_cisc637_group1_target.contact (contact_contact_type_id)
         VALUES(v_contact_type_id) RETURNING contact_id INTO v_contact_id;
+        COMMIT;
         ----------------------------------------------------------
 
         --OFFICE PART------------------------------------------------
@@ -104,7 +105,7 @@ BEGIN
             v_office_id := insert_or_get_office(
                 in_dest_table_name     => 'OFFICE',
                 in_office_name         => v_office,
-                in_office_type_id     => v_office_type_id,
+                in_office_office_type_id     => v_office_type_id,
                 in_office_crtd_id     => v_crt_user,
                 in_office_crtd_dt     => v_crt_date,
                 in_office_updt_id     => v_mdf_user,
@@ -121,17 +122,20 @@ BEGIN
             v_address1_id := insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
                 in_address_value   => v_address1,
+                in_address_region  => NULL,
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zip,
-                in_address_type_id => v_address_type_id,
+                in_address_address_type_id => v_address_type_id,
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
                 in_address_updt_dt => v_mdf_date
             );
             
-            INSERT INTO contact_address VALUES(v_contact_id, v_address1_id);
+            INSERT INTO UD_CISC637_GROUP1_TARGET.contact_address
+            (contact_address_contact_id, contact_address_address_id)
+            VALUES(v_contact_id, v_address1_id);
         END IF;
 
         --ADDRESS2 HANDLING------------------------------------------
@@ -139,10 +143,11 @@ BEGIN
             v_address2_id := insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
                 in_address_value   => v_address2,
+                in_address_region  => NULL,
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zip,
-                in_address_type_id => v_address_type_id,
+                in_address_address_type_id => v_address_type_id,
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
@@ -157,7 +162,7 @@ BEGIN
             v_phone1_id := insert_or_get_phone(
                 in_dest_table_name => 'PHONE',
                 in_phone_number    => v_phone1,
-                in_phone_type_id  => v_phone_type_id,
+                in_phone_phone_type_id  => v_phone_type_id,
                 in_phone_crtd_id  => v_crt_user,
                 in_phone_crtd_dt  => v_crt_date,
                 in_phone_updt_id  => v_mdf_user,
@@ -172,7 +177,7 @@ BEGIN
             v_phone2_id := insert_or_get_phone(
                 in_dest_table_name => 'PHONE',
                 in_phone_number    => v_phone2,
-                in_phone_type_id  => v_phone_type_id,
+                in_phone_phone_type_id  => v_phone_type_id,
                 in_phone_crtd_id  => v_crt_user,
                 in_phone_crtd_dt  => v_crt_date,
                 in_phone_updt_id  => v_mdf_user,
