@@ -37,8 +37,7 @@ BEGIN
         AND address_region = :address_region
         AND address_city = :address_city
         AND address_state = :address_state
-        AND address_zip = :address_zip
-        and address_region = :address_region';
+        AND address_zip = :address_zip';
 
     --Now go through the execution process
     BEGIN
