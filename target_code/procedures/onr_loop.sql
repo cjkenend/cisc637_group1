@@ -1,10 +1,3 @@
--- NOTES
--- Missing Handling of Region
--- Assumes existence of 
---      office_type_desc: HEADQUARTERS
---      address_type_desc: HOME
---      phone_type_desc: FAX, PERSONAL 
---      email_type_desc: WORK
 ---------------------------------------------------
 -- Loop over rows in ONR table
 
