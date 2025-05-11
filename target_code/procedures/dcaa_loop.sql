@@ -62,15 +62,15 @@ CREATE OR REPLACE PROCEDURE MIGRATE_DCAA AS
 
     -- Retrieved type IDs
     v_contact_type_id       UD_CISC637_GROUP1_TARGET.contact_type.contact_type_id%TYPE;
-    v_office_type_id        UD_CISC637_GROUP1_TARGET.office_type.office_type_id%TYPE;
-    v_address_type_id       UD_CISC637_GROUP1_TARGET.address_type.address_type_id%TYPE;
-    v_phone_type_id         UD_CISC637_GROUP1_TARGET.phone_type.phone_type_id%TYPE;
+    v_office_type_id_main   UD_CISC637_GROUP1_TARGET.office_type.office_type_id%TYPE;
+    v_address_type_id_off   UD_CISC637_GROUP1_TARGET.address_type.address_type_id%TYPE;
+    v_phone_type_id_work    UD_CISC637_GROUP1_TARGET.phone_type.phone_type_id%TYPE;
 
 BEGIN
     -- Get needed type_ids
-    SELECT OFFICE_TYPE_ID INTO v_office_type_id FROM UD_CISC637_GROUP1_TARGET.office_type WHERE OFFICE_TYPE_DESC = 'MAIN_OFFICE';
-    SELECT ADDRESS_TYPE_ID INTO v_address_type_id FROM UD_CISC637_GROUP1_TARGET.address_type WHERE ADDRESS_TYPE_DESC = 'OFFICE_ADDRESS';
-    SELECT PHONE_TYPE_ID INTO v_phone_type_id FROM UD_CISC637_GROUP1_TARGET.phone_type WHERE PHONE_TYPE_DESC = 'WORK';
+    SELECT OFFICE_TYPE_ID INTO v_office_type_id_main FROM UD_CISC637_GROUP1_TARGET.office_type WHERE OFFICE_TYPE_DESC = 'MAIN_OFFICE';
+    SELECT ADDRESS_TYPE_ID INTO v_address_type_id_off FROM UD_CISC637_GROUP1_TARGET.address_type WHERE ADDRESS_TYPE_DESC = 'OFFICE_ADDRESS';
+    SELECT PHONE_TYPE_ID INTO v_phone_type_id_work FROM UD_CISC637_GROUP1_TARGET.phone_type WHERE PHONE_TYPE_DESC = 'WORK';
     SELECT CONTACT_TYPE_ID INTO v_contact_type_id FROM UD_CISC637_GROUP1_TARGET.contact_type WHERE CONTACT_TYPE_DESC = 'dcaa';
 
     -- Put values into variables
@@ -88,30 +88,27 @@ BEGIN
         v_crt_date := dc.createdate;
         v_crt_user := dc.createuser;
 
-        -- Creates a new contact with CONTACT_TYPE_ID for DCAA
-        ----------------------------------------------------------
+        -- Create Contact
         INSERT INTO ud_cisc637_group1_target.contact (contact_contact_type_id)
         VALUES(v_contact_type_id) RETURNING contact_id INTO v_contact_id;
-        ----------------------------------------------------------
 
-        --OFFICE PART------------------------------------------------
+        --OFFICE HANDLING--------------------------------------------
         IF dc.office IS NOT NULL THEN
             v_office_id := insert_or_get_office(
                 in_dest_table_name     => 'OFFICE',
                 in_office_name         => v_office,
-                in_office_office_type_id     => v_office_type_id,
-                in_office_crtd_id     => v_crt_user,
-                in_office_crtd_dt     => v_crt_date,
-                in_office_updt_id     => v_mdf_user,
-                in_office_updt_dt     => v_mdf_date
+                in_office_office_type_id => v_office_type_id_main,
+                in_office_crtd_id      => v_crt_user,
+                in_office_crtd_dt      => v_crt_date,
+                in_office_updt_id      => v_mdf_user,
+                in_office_updt_dt      => v_mdf_date
             );
             
-            INSERT INTO UD_CISC637_GROUP1_TARGET.contact_office
-            (contact_office_contact_id, contact_office_office_id)
-            VALUES(v_contact_id, v_office_id);
+            INSERT INTO contact_office VALUES(v_contact_id, v_office_id);
         END IF;
 
-        --ADDRESS1 HANDLING------------------------------------------
+        --ADDRESS HANDLING-------------------------------------------
+        -- Address1
         IF dc.address1 IS NOT NULL THEN   
             v_address1_id := insert_or_get_address(
                 in_dest_table_name => 'ADDRESS',
@@ -119,49 +116,24 @@ BEGIN
                 in_address_city    => v_city,
                 in_address_state   => v_state,
                 in_address_zip     => v_zipcode,
-                in_address_address_type_id => v_address_type_id,
+                in_address_address_type_id => v_address_type_id_off,
                 in_address_crtd_id => v_crt_user,
                 in_address_crtd_dt => v_crt_date,
                 in_address_updt_id => v_mdf_user,
                 in_address_updt_dt => v_mdf_date
             );
-            
             INSERT INTO contact_address VALUES(v_contact_id, v_address1_id);
         END IF;
 
-        --ADDRESS2 HANDLING------------------------------------------
+        -- Address2
         IF dc.address2 IS NOT NULL THEN
-            v_address2_id := insert_or_get_address(
-                in_dest_table_name => 'ADDRESS',
-                in_address_value   => v_address2,
-                in_address_city    => v_city,
-                in_address_state   => v_state,
-                in_address_zip     => v_zipcode,
-                in_address_address_type_id => v_address_type_id,
-                in_address_crtd_id => v_crt_user,
-                in_address_crtd_dt => v_crt_date,
-                in_address_updt_id => v_mdf_user,
-                in_address_updt_dt => v_mdf_date
-            );
-            
+            v_address2_id := insert_or_get_address(...); -- Similar to Address1
             INSERT INTO contact_address VALUES(v_contact_id, v_address2_id);
         END IF;
 
-        --ADDRESS3 HANDLING------------------------------------------
+        -- Address3
         IF dc.address3 IS NOT NULL THEN
-            v_address3_id := insert_or_get_address(
-                in_dest_table_name => 'ADDRESS',
-                in_address_value   => v_address3,
-                in_address_city    => v_city,
-                in_address_state   => v_state,
-                in_address_zip     => v_zipcode,
-                in_address_address_type_id => v_address_type_id,
-                in_address_crtd_id => v_crt_user,
-                in_address_crtd_dt => v_crt_date,
-                in_address_updt_id => v_mdf_user,
-                in_address_updt_dt => v_mdf_date
-            );
-            
+            v_address3_id := insert_or_get_address(...); -- Similar to Address1
             INSERT INTO contact_address VALUES(v_contact_id, v_address3_id);
         END IF;
 
@@ -170,13 +142,12 @@ BEGIN
             v_phone_id := insert_or_get_phone(
                 in_dest_table_name => 'PHONE',
                 in_phone_number    => v_phone,
-                in_phone_phone_type_id  => v_phone_type_id,
-                in_phone_crtd_id  => v_crt_user,
-                in_phone_crtd_dt  => v_crt_date,
-                in_phone_updt_id  => v_mdf_user,
-                in_phone_updt_dt  => v_mdf_date
+                in_phone_type_id   => v_phone_type_id_work,
+                in_phone_crtd_id   => v_crt_user,
+                in_phone_crtd_dt   => v_crt_date,
+                in_phone_updt_id   => v_mdf_user,
+                in_phone_updt_dt   => v_mdf_date
             );
-            
             INSERT INTO contact_phone VALUES(v_contact_id, v_phone_id);
         END IF;
 
@@ -186,5 +157,5 @@ BEGIN
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        RAISE;
+        RAISE VALUE_ERROR;
 END MIGRATE_DCAA;
