@@ -594,8 +594,11 @@ END;
 /
 
 
+ALTER TRIGGER trg01_address DISABLE;
 
+ALTER TRIGGER trg01_phone DISABLE;
 
+ALTER TRIGGER trg01_email DISABLE;
 
 
 
@@ -989,4 +992,8 @@ END;
 
 
 
+ALTER TRIGGER trg01_address ENABLE;
 
+ALTER TRIGGER trg01_phone ENABLE;
+
+ALTER TRIGGER trg01_email ENABLE;
