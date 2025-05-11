@@ -1,38 +1,4 @@
 
--- NOTES
--- Missing Handling of Region
--- Assumes existence of 
---      office_type_desc: HEADQUARTERS
---      address_type_desc: HOME
---      phone_type_desc: FAX, PERSONAL 
---      email_type_desc: WORK
----------------------------------------------------
--- Loop over rows in DCAA table
-
-       -- Save generated CONTACT_ID into variable v_contact_id
-
-        --OFFICE PART
-        --Check if og.office is null
-            --Use 'insert_or_get_office' procedure
-            --INSERT new record in CONTACT_OFFICE using v_contact_id
-
-        --PHONE PART
-        --Check if og.phone is null
-            --Use 'insert_or_get_phone' procedure
-            --INSERT new record in CONTACT_PHONE using v_contact_id
-            --Repeat for fax
-        
-        --ADDRESS PART
-        --Check if og.address1 is null
-            --Use 'insert_or_get_address' procedure
-            --INSERT new record in CONTACT_ADDRESS using v_contact_id 
-            --Repeat for address2
-        
-        --EMAIL PART
-        --Check if og.email is null
-            --Use 'insert_or_get_email' procedure
-            --INSERT a new record in CONTACT_EMAIL using v_contact_id
-      
 CREATE OR REPLACE PROCEDURE MIGRATE_DCAA AS
     -- Cursor to read all rows from the DCAA table
     CURSOR c_cursor IS 
