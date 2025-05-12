@@ -201,11 +201,6 @@ ALTER TABLE address
             REFERENCES address_type ( address_type_id )
         ENABLE;
 
-
-
-
-
-
 ------------------------   Phone Tables ---------------------------------------
         
 
@@ -600,12 +595,6 @@ ALTER TRIGGER trg01_phone DISABLE;
 
 ALTER TRIGGER trg01_email DISABLE;
 
-
-
-
-
-
-
 -- Goal is to make a function that is called gets an address from the table 
 
 /* 
@@ -642,18 +631,26 @@ BEGIN
         SELECT address_id 
         FROM ' || in_dest_table_name || '
         WHERE address_value = :address_value
-        AND address_region = :address_region
+        AND ' || 
+        CASE 
+            WHEN in_address_region IS NULL THEN 'address_region IS NULL' 
+            ELSE 'address_region = :address_region' 
+        END || '
         AND address_city = :address_city
         AND address_state = :address_state
         AND address_zip = :address_zip';
 
     --Now go through the execution process
     BEGIN
-    
-        --Execute
-        EXECUTE IMMEDIATE v_sql
-        INTO out_address_id
-        USING in_address_value, in_address_region, in_address_city, in_address_state, in_address_zip;
+        IF in_address_region IS NULL THEN
+            EXECUTE IMMEDIATE v_sql
+            INTO out_address_id
+            USING in_address_value, in_address_city, in_address_state, in_address_zip;
+        ELSE
+            EXECUTE IMMEDIATE v_sql
+            INTO out_address_id
+            USING in_address_value, in_address_region, in_address_city, in_address_state, in_address_zip;
+        END IF;
 
         --Return 
         RETURN out_address_id;
