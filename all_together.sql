@@ -702,14 +702,6 @@ END;
 /
 
 
-
-
-
-
-
-
-
-
 -- Goal is to make a function that is called gets an email from the table 
 
 /* 
@@ -892,13 +884,6 @@ BEGIN
             RETURN(NULL);
 END;
 /
-
-
-
-
-
-
-
 
 
 -- Goal is to make a function that is called gets an phone from the table 
